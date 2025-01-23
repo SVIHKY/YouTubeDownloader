@@ -1,18 +1,26 @@
-# Použijeme oficiální runtime obraz pro .NET 8
+# Použij oficiální .NET image jako základ
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
-EXPOSE 80
+EXPOSE 8080
 
-# Použijeme oficiální SDK obraz pro .NET 8 pro build
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
+COPY ["YouTubeDownloader.csproj", "./"]
+RUN dotnet restore "YouTubeDownloader.csproj"
 COPY . .
-
-# Build projektu
 RUN dotnet publish "YouTubeDownloader.csproj" -c Release -o /app/out
 
-# Přesuneme build do finálního runtime prostředí
 FROM base AS final
 WORKDIR /app
+
+# Instalace yt-dlp s automatickou aktualizací
+RUN apt-get update && \
+    apt-get install -y wget && \
+    wget https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -O /usr/local/bin/yt-dlp && \
+    chmod a+rx /usr/local/bin/yt-dlp
+
+# Příkaz pro automatickou aktualizaci yt-dlp při spuštění
+RUN echo '#!/bin/bash\nwget https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -O /usr/local/bin/yt-dlp && chmod a+rx /usr/local/bin/yt-dlp\nexec "$@"' > /app/entrypoint.sh && chmod +x /app/entrypoint.sh
+
 COPY --from=build /app/out .
-ENTRYPOINT ["dotnet", "YouTubeDownloader.dll"]
+ENTRYPOINT ["/app/entrypoint.sh", "dotnet", "YouTubeDownloader.dll"]
