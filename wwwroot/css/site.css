@@ -1,0 +1,39 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+form {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    font-weight: bold;
+}
+
+input, select, button {
+    font-size: 1rem;
+}
+
+button {
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+    button:hover {
+        background-color: #003d80;
+        transform: scale(1.02);
+    }
+
+#result {
+    font-size: 1.2rem;
+}

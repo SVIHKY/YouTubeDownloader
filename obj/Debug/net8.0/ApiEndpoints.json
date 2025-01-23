@@ -1,0 +1,18 @@
+[
+  {
+    "ContainingType": "YouTubeDownloader.Controllers.DownloadController",
+    "Method": "Download",
+    "RelativePath": "api/Download",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "YouTubeDownloader.Controllers.DownloadRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]
